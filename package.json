@@ -1,0 +1,21 @@
+{
+  "name": "acuity-checker",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/orita7/acuity-checker#readme",
+  "bugs": {
+    "url": "https://github.com/orita7/acuity-checker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orita7/acuity-checker.git"
+  },
+  "license": "ISC",
+  "author": "Orit Korn Gol",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

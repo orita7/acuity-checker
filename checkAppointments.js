@@ -8,7 +8,9 @@ async function checkAvailability() {
   const page = await browser.newPage();
 
   try {
-    // Navigate the page to a URL.
+    if (!fs.existsSync("screenshots")) {
+      fs.mkdirSync("screenshots");
+    }
     [
       "screenshots/first.png",
       "screenshots/second.png",
@@ -18,6 +20,7 @@ async function checkAvailability() {
         fs.unlinkSync(file);
       }
     });
+    // Navigate the page to a URL.
     await page.goto(config.URL).then(() => console.log("Opened page"));
     await page.screenshot({ path: "screenshots/first.png", fullPage: true });
     await page.waitForSelector("button.react-calendar__navigation__label", {
@@ -37,6 +40,15 @@ async function checkAvailability() {
       visible: true,
     });
     await page.screenshot({ path: "screenshots/third.png", fullPage: true });
+    const timeSlots = await page.$$eval(
+      "button.time-selection.css-tiwhmn",
+      (elements) => elements.map((el) => el.innerText)
+    );
+    if (timeSlots.length > 0) {
+      console.log(`Found ${timeSlots.length} available slot(s)`);
+    } else {
+      console.log(`There are no available slots`);
+    }
   } catch (error) {
     console.log(error);
   } finally {

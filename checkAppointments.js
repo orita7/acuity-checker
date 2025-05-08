@@ -1,7 +1,6 @@
 const puppeteer = require("puppeteer");
+const config = require("./config");
 const fs = require("fs");
-const URL =
-  "https://app.acuityscheduling.com/schedule/7f921de7/appointment/10781659/calendar/3106967?calendarIds=3106967";
 
 async function checkAvailability() {
   // Launch the browser and open a new blank page
@@ -10,13 +9,17 @@ async function checkAvailability() {
 
   try {
     // Navigate the page to a URL.
-    await page.goto(URL).then(() => console.log("Opened page"));
-    ["first.png", "second.png", "third.png"].forEach((file) => {
+    [
+      "screenshots/first.png",
+      "screenshots/second.png",
+      "screenshots/third.png",
+    ].forEach((file) => {
       if (fs.existsSync(file)) {
         fs.unlinkSync(file);
       }
     });
-    await page.screenshot({ path: "first.png", fullPage: true });
+    await page.goto(config.URL).then(() => console.log("Opened page"));
+    await page.screenshot({ path: "screenshots/first.png", fullPage: true });
     await page.waitForSelector("button.react-calendar__navigation__label", {
       visible: true,
     });
@@ -24,14 +27,16 @@ async function checkAvailability() {
       "button.react-calendar__navigation__label"
     );
     await page.evaluate((el) => el.click(), datesButton);
-    await page.screenshot({ path: "second.png", fullPage: true });
-    await page.waitForSelector('[aria-label="May 2025"]');
-    const monthButton = await page.$('[aria-label="May 2025"]');
+    await page.screenshot({ path: "screenshots/second.png", fullPage: true });
+    await page.waitForSelector(`[aria-label="${config.MONTH} ${config.YEAR}"]`);
+    const monthButton = await page.$(
+      `[aria-label="${config.MONTH} ${config.YEAR}"]`
+    );
     await page.evaluate((el) => el.click(), monthButton);
     await page.waitForSelector(".react-calendar__month-view__days", {
       visible: true,
     });
-    await page.screenshot({ path: "third.png", fullPage: true });
+    await page.screenshot({ path: "screenshots/third.png", fullPage: true });
   } catch (error) {
     console.log(error);
   } finally {

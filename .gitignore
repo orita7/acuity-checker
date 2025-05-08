@@ -1,0 +1,10 @@
+# Node.js
+node_modules/
+.env
+npm-debug.log
+
+# Puppeteer screenshots
+screenshots/
+
+# Mac system files
+.DS_Store
